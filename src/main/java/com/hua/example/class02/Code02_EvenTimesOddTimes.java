@@ -22,6 +22,7 @@ public class Code02_EvenTimesOddTimes {
 		// eor最右侧的1，提取出来
 		// eor :     00110010110111000
 		// rightOne :00000000000001000
+		// eor & (~eor + 1) == eor & (-eor)
 		int rightOne = eor & (-eor); // 提取出最右的1
 		
 		
@@ -30,13 +31,14 @@ public class Code02_EvenTimesOddTimes {
 			//  arr[1] =  111100011110000
 			// rightOne=  000000000010000
 			if ((arr[i] & rightOne) != 0) {
+				//最右1位也是1的数
 				onlyOne ^= arr[i];
 			}
 		}
 		System.out.println(onlyOne + " " + (eor ^ onlyOne));
 	}
 
-	
+	//一个数中转换为2进制，有多少个1
 	public static int bit1counts(int N) {
 		int count = 0;
 		

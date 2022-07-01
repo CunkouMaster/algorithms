@@ -75,8 +75,20 @@ public class Code03_KM {
 		}
 		int ans = 0;
 		for (int i = 0; i < 32; i++) {
+//			if(help[i] % m == 0){
+//				continue;
+//			}
+//			if(help[i] % m == k){
+//				ans |= 1 << i;
+//			} else { return -1 }
+
+//			help[i] %= m;
+//			if (help[i] != 0) {
+//				ans |= 1 << i;
+//			}
+
 			help[i] %= m;
-			if (help[i] != 0) {
+			if (help[i] == k) {
 				ans |= 1 << i;
 			}
 		}
@@ -133,7 +145,7 @@ public class Code03_KM {
 		int range = 30;
 		int testTime = 100000;
 		int max = 9;
-		System.out.println("测试开始");
+		System.out.println("test begin");
 		for (int i = 0; i < testTime; i++) {
 			int a = (int) (Math.random() * max) + 1; // a 1 ~ 9
 			int b = (int) (Math.random() * max) + 1; // b 1 ~ 9
@@ -150,10 +162,10 @@ public class Code03_KM {
 			if (ans1 != ans2 || ans1 != ans3) {
 				System.out.println(ans1);
 				System.out.println(ans3);
-				System.out.println("出错了！");
+				System.out.println("error ！");
 			}
 		}
-		System.out.println("测试结束");
+		System.out.println("test success end");
 	}
 
 }
