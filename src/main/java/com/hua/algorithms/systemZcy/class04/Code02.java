@@ -1,36 +1,41 @@
-package com.hua.example.class04;
+package com.hua.algorithms.systemZcy.class04;
 
-public class Code01_MergeSort {
+public class Code02 {
 
-	// 递归方法实现
-	public static void mergeSort1(int[] arr) {
+	public static int smallSum(int[] arr) {
 		if (arr == null || arr.length < 2) {
-			return;
+			return 0;
 		}
-		process(arr, 0, arr.length - 1);
+		return process(arr, 0, arr.length - 1);
 	}
 
-	// 请把arr[L..R]排有序
-	// l...r N
-	// T(N) = 2 * T(N / 2) + O(N)
-	// O(N * logN)
-	public static void process(int[] arr, int L, int R) {
+	// arr[L..R]既要排好序，也要求小和返回
+	// 所有merge时，产生的小和，累加
+	// 左 排序   merge
+	// 右 排序  merge
+	// merge
+	public static int process(int[] arr, int L , int R) {
 		if (L == R) { // base case
-			return;
+			return 0;
 		}
 		int mid = L + ((R - L) >> 1);
-		process(arr, L, mid);
-		process(arr, mid + 1, R);
-		merge(arr, L, mid, R);
+		return process(arr, L, mid) + process(arr, mid + 1, R) + merge(arr, L, mid, R);
 	}
 
-	public static void merge(int[] arr, int L, int M, int R) {
+	public static int merge(int[] arr, int L, int M, int R) {
+		int ans = 0;
+
+
 		int[] help = new int[R - L + 1];
 		int i = 0;
 		int p1 = L;
 		int p2 = M + 1;
 		while (p1 <= M && p2 <= R) {
-			help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
+			if(arr[p1] < arr[p2]){
+				ans += (arr[p1] *(R - p2 + 1));
+			}
+			//当arr[p1] = arr[p2]时，移动p2指针
+			help[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
 		}
 		// 要么p1越界了，要么p2越界了
 		while (p1 <= M) {
@@ -42,35 +47,21 @@ public class Code01_MergeSort {
 		for (i = 0; i < help.length; i++) {
 			arr[L + i] = help[i];
 		}
+		return ans;
 	}
 
-	// 非递归方法实现
-	public static void mergeSort2(int[] arr) {
+	// for test
+	public static int comparator(int[] arr) {
 		if (arr == null || arr.length < 2) {
-			return;
+			return 0;
 		}
-		int N = arr.length;
-		// 步长
-		int mergeSize = 1;
-		while (mergeSize < N) { // log N
-			// 当前左组的，第一个位置
-			int L = 0;
-			while (L < N) {
-				int M = L + mergeSize - 1;
-				if (M >= N -1) {
-					//中点M >= 最大index N-1
-					break;
-				}
-				int R = M + Math.min(mergeSize, N - M - 1);
-				merge(arr, L, M, R);
-				L = R + 1;
+		int res = 0;
+		for (int i = 1; i < arr.length; i++) {
+			for (int j = 0; j < i; j++) {
+				res += arr[j] < arr[i] ? arr[j] : 0;
 			}
-			// 防止溢出
-			if (mergeSize > N / 2) {
-				break;
-			}
-			mergeSize <<= 1;
 		}
+		return res;
 	}
 
 	// for test
@@ -129,20 +120,18 @@ public class Code01_MergeSort {
 		int testTime = 500000;
 		int maxSize = 100;
 		int maxValue = 100;
-		System.out.println("测试开始");
+		boolean succeed = true;
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			mergeSort1(arr1);
-			mergeSort2(arr2);
-			if (!isEqual(arr1, arr2)) {
-				System.out.println("出错了！");
+			if (smallSum(arr1) != comparator(arr2)) {
+				succeed = false;
 				printArray(arr1);
 				printArray(arr2);
 				break;
 			}
 		}
-		System.out.println("测试结束");
+		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
 	}
 
 }

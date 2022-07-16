@@ -87,8 +87,7 @@ public class Code03_KM {
 //				ans |= 1 << i;
 //			}
 
-			help[i] %= m;
-			if (help[i] == k) {
+			if (help[i] % m == k) {
 				ans |= 1 << i;
 			}
 		}
