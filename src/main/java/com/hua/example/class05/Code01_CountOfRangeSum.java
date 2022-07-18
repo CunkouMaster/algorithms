@@ -18,10 +18,12 @@ public class Code01_CountOfRangeSum {
 
 	public static int process(long[] sum, int L, int R, int lower, int upper) {
 		if (L == R) {
+			// sum(0 ~ i)情况
 			return sum[L] >= lower && sum[L] <= upper ? 1 : 0;
 		}
 		int M = L + ((R - L) >> 1);
-		return process(sum, L, M, lower, upper) + process(sum, M + 1, R, lower, upper)
+		return process(sum, L, M, lower, upper) +
+				process(sum, M + 1, R, lower, upper)
 				+ merge(sum, L, M, R, lower, upper);
 	}
 
@@ -29,7 +31,13 @@ public class Code01_CountOfRangeSum {
 		int ans = 0;
 		int windowL = L;
 		int windowR = L;
-		// [windowL, windowR)
+		// 		[windowL, windowR)
+		//      windowR 最终位置为 =max的后一位，windowL最终位置为 = min的那位
+		//		| 0 | 1 | 2 | 3 | 4 | 5 | 6 |
+		//		|   |min| - | - | - |max|   |
+		//		|   | WL|   |   |   |   |   |
+		//		|   |   |   |   |   |   | WR|
+
 		for (int i = M + 1; i <= R; i++) {
 			long min = arr[i] - upper;
 			long max = arr[i] - lower;

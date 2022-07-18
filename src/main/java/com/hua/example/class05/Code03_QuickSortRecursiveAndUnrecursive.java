@@ -72,13 +72,13 @@ public class Code03_QuickSortRecursiveAndUnrecursive {
 			return;
 		}
 		int N = arr.length;
-		swap(arr, (int) (Math.random() * N), N - 1);
+		swap(arr, (int) (Math.random() * N), N - 1);// 随机一个位置和N-1位置交换作为划分值
 		int[] equalArea = netherlandsFlag(arr, 0, N - 1);
 		int el = equalArea[0];
 		int er = equalArea[1];
 		Stack<Op> stack = new Stack<>();
 		stack.push(new Op(0, el - 1));
-		stack.push(new Op(er + 1, N - 1));
+		stack.push(new Op(er + 1, N - 1));// 栈中下发了两个任务
 		while (!stack.isEmpty()) {
 			Op op = stack.pop(); // op.l ... op.r
 			if (op.l < op.r) {
@@ -86,7 +86,7 @@ public class Code03_QuickSortRecursiveAndUnrecursive {
 				equalArea = netherlandsFlag(arr, op.l, op.r);
 				el = equalArea[0];
 				er = equalArea[1];
-				stack.push(new Op(op.l, el - 1));
+				stack.push(new Op(op.l, el - 1)); // 分裂出两个子任务压入栈中
 				stack.push(new Op(er + 1, op.r));
 			}
 		}
