@@ -1,5 +1,6 @@
 package com.hua.algorithms.systemZcy.class06;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -28,37 +29,54 @@ public class Code01 {
 		}
 
 		public void push(int value) {
-
+			if(isFull()){
+				throw new RuntimeException("heap is full");
+			}
+			heap[heapSize++] = value;
+			heapInsert(heap,heapSize - 1);
 		}
 
 		// 用户此时，让你返回最大值，并且在大根堆中，把最大值删掉
 		// 剩下的数，依然保持大根堆组织
 		public int pop() {
-
-			return 0;
+			if(isEmpty()){
+				throw new RuntimeException("heap is empty");
+			}
+			int ans = heap[0];
+			swap(heap,0,--heapSize);
+			heapify(heap,0,heapSize);
+			return ans;
 		}
 
 		// 新加进来的数，现在停在了index位置，请依次往上移动，
 		// 移动到0位置，或者干不掉自己的父亲了，停！
 		private void heapInsert(int[] arr, int index) {
-			int father = (index % 2 == 0 ? (index - 2) / 2 : (index - 1) / 2);
+			//父节点位置
+			int father = (index - 1)  >> 1;
 			while (father >= 0 && arr[index] > arr[father] ){
 				swap(arr,index,father);
 				index = father;
+				father = (index - 1)  >> 1;
 			}
-
 		}
 
 		// 从index位置，往下看，不断的下沉
 		// 停：较大的孩子都不再比index位置的数大；已经没孩子了
 		private void heapify(int[] arr, int index, int heapSize) {
-
-			int next = arr[index * 2 + 2] > arr[index * 2 + 1] ? index * 2 + 2 : index * 2 + 1;
-			while (arr[next] > arr[index] && next < heapSize){
-				swap(arr,index,next);
-				index = next;
+			//可能只有左孩子
+			int left = index * 2 + 1;
+			while (left < heapSize){
+				if(left + 1 < heapSize){
+					//存在右孩子
+					left = arr[left + 1] > arr[left] ? left + 1 : left;
+				}
+				if(arr[index] >= arr[left]){
+					break;
+				}
+				swap(arr,index,left);
+				index = left;
+				left = index * 2 + 1;
 			}
-
 		}
 
 		private void swap(int[] arr, int i, int j) {
