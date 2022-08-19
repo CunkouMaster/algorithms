@@ -36,12 +36,12 @@ public class Code01 {
 			if(word == null || word.length() == 0){
 				return;
 			}
-			char[] chars = word.toCharArray();
+			char[] charArray = word.toCharArray();
 			Node1 node = root;
 			node.pass++;
 			int index = 0;
-			for(char value : chars){
-				index = value - 'a';//
+			for(char str : charArray){
+				index = str - 'a';
 				if(node.nexts[index] == null){
 					node.nexts[index] = new Node1();
 				}
@@ -49,19 +49,19 @@ public class Code01 {
 				node.pass++;
 			}
 			node.end++;
-
 		}
 
 		public void delete(String word) {
 			if(search(word) == 0){
 				return;
 			}
-			char[] str = word.toCharArray();
+			char[] charArray = word.toCharArray();
 			Node1 node = root;
 			node.pass--;
 			int index = 0;
-			for(char value : str){
-				index = value - 'a';//
+			for(char str : charArray){
+				index = str - 'a';
+				//不判断有无 -- 判断pass是否为0
 				if(--node.nexts[index].pass == 0){
 					node.nexts[index] = null;
 					return;
@@ -76,18 +76,17 @@ public class Code01 {
 			if(word == null || word.length() == 0){
 				return 0;
 			}
-			char[] str = word.toCharArray();
+			char[] charArray = word.toCharArray();
 			Node1 node = root;
 			int index = 0;
-			for(char value : str){
-				index = value - 'a';//
-				if (node.nexts[index] == null) {
+			for(char str : charArray){
+				index = str - 'a';
+				if(node.nexts[index] == null){
 					return 0;
 				}
 				node = node.nexts[index];
 			}
 			return node.end;
-
 		}
 
 		// 所有加入的字符串中，有几个是以pre这个字符串作为前缀的
@@ -95,12 +94,12 @@ public class Code01 {
 			if(pre == null || pre.length() == 0){
 				return 0;
 			}
-			char[] str = pre.toCharArray();
+			char[] charArray = pre.toCharArray();
 			Node1 node = root;
 			int index = 0;
-			for(char value : str){
-				index = value - 'a';//
-				if (node.nexts[index] == null) {
+			for(char str : charArray){
+				index = str - 'a';
+				if(node.nexts[index] == null){
 					return 0;
 				}
 				node = node.nexts[index];
