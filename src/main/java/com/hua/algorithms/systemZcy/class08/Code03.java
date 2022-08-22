@@ -6,10 +6,10 @@ public class Code03 {
 
 	// only for no-negative value
 	public static void radixSort(int[] arr) {
-		if (arr == null || arr.length < 2) {
+		if (arr == null || arr.length <= 1) {
 			return;
 		}
-		radixSort(arr, 0, arr.length - 1, maxbits(arr));
+		radixSort(arr,  maxbits(arr));
 	}
 
 	public static int maxbits(int[] arr) {
@@ -26,31 +26,38 @@ public class Code03 {
 	}
 
 	// arr[L..R]排序  ,  最大值的十进制位数digit
-	public static void radixSort(int[] arr, int L, int R, int digit) {
+	public static void radixSort(int[] arr, int digit) {
 
-		int [] help = new int[R - L + 1];
+		// 有多少个数准备多少个辅助空间
+		int [] help = new int[arr.length];
 
 		for(int count = 0;count < digit;count++){
-			int [] countArr = new int[10];
-			for(int i = L ;i <= R; i++){
+			// 10个空间
+			// count[0] 当前位(d位)是0的数字有多少个
+			// count[1] 当前位(d位)是(0和1)的数字有多少个
+			// count[2] 当前位(d位)是(0、1和2)的数字有多少个
+			// count[i] 当前位(d位)是(0~i)的数字有多少个
+			int [] countArr = new int[10];// countArr[0..9]
+			for(int i = 0 ;i < arr.length; i++){
+				// 103  1   3
+				// 209  1   9
 				int j = getDigit(arr[i],count);
 				countArr[j]++;
 			}
+			//前缀和
 			for(int i = 1; i < 10; i++){
 				countArr[i] = countArr[i] + countArr[i - 1];
 			}
 
-			for (int i = R; i >= L; i--) {
+			for (int i = arr.length - 1; i >= 0; i--) {
 				int j = getDigit(arr[i],count);
 				help[--countArr[j]] = arr[i];
 			}
 
-			for(int i = L,j=0;i <= R;i++,j++){
-				arr[i] = help[j];
+			for(int i = 0; i < arr.length;i++){
+				arr[i] = help[i];
 			}
 		}
-
-		
 	}
 
 	public static int getDigit(int x, int d) {
